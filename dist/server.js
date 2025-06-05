@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const db_1 = __importDefault(require("./db"));
+const migrator_1 = require("./db/migrations/migrator");
 const PORT = process.env.PORT || 8080;
 async function startServer() {
     try {
@@ -12,6 +13,11 @@ async function startServer() {
         console.log('Testing database connection...');
         await db_1.default.query('SELECT NOW()');
         console.log('Database connected successfully');
+        // Run migrations before starting server
+        console.log('Running database migrations...');
+        const migrator = new migrator_1.DatabaseMigrator(db_1.default.pool);
+        await migrator.migrateUp();
+        console.log('Migrations completed successfully');
         // Start the server
         app_1.default.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);

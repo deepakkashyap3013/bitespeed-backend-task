@@ -1,5 +1,6 @@
 import app from './app';
 import db from './db';
+import { DatabaseMigrator } from './db/migrations/migrator';
 
 const PORT = process.env.PORT || 8080;
 
@@ -9,6 +10,12 @@ async function startServer() {
         console.log('Testing database connection...');
         await db.query('SELECT NOW()');
         console.log('Database connected successfully');
+
+        // Run migrations before starting server
+        console.log('Running database migrations...');
+        const migrator = new DatabaseMigrator(db.pool);
+        await migrator.migrateUp();
+        console.log('Migrations completed successfully');
 
         // Start the server
         app.listen(PORT, () => {
