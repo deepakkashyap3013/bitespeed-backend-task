@@ -1,0 +1,12 @@
+name: bitespeed-identity-service
+services:
+  db:
+    image: postgres:17.5-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: postgres
+      POSTGRES_DB: bitespeed
