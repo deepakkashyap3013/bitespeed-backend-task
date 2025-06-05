@@ -23,4 +23,6 @@ pool.on('error', (err) => {
 export default {
     query: (text: string, params?: any[]) => pool.query(text, params),
     getClient: () => pool.connect(),
+    end: () => pool.end(),
+    pool: pool,
 };

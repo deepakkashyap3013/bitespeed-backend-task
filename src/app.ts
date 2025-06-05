@@ -9,14 +9,14 @@ const app = express();
 app.use(express.json());
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK', message: 'Bitespeed Identity Service is running!' });
+    res.json({ status: 'OK', message: 'Bitespeed Identity Service is running!', timestamp: new Date().toISOString() });
 });
 
 app.use('/api/v1', routes);
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
-    res.status(500).send('Unexpected error');
+    res.status(500).send('Internal Server Error');
 });
 
 
